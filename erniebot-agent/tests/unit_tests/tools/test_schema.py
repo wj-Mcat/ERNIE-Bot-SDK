@@ -14,6 +14,7 @@
 from __future__ import annotations
 
 import unittest
+from enum import Enum
 from typing import List, Optional
 
 from erniebot_agent.tools.base import RemoteToolkit
@@ -161,8 +162,17 @@ class TestToolSchema(unittest.TestCase):
         self.assertDictEqual(openapi_dict, expected_openapi_dict)
 
     def test_enum_value(self):
+        class AnimalType(Enum):
+            dog = 1
+            cat = 2
+
+        class AnimalView(ToolParameterView):
+            animal: AnimalType = Field(description="动物种类")
+
         # TODO(wj-Mcat): to support enum[int/str/float]
-        pass
+
+        openapi_dict = AnimalView.to_openapi_dict()
+        assert openapi_dict is not None
 
     def test_is_optional_type(self):
         self.assertFalse(is_optional_type(List[int]))
