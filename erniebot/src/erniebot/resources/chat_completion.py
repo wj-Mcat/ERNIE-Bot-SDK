@@ -136,7 +136,7 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
 
     @staticmethod
     def check_models(model: str):
-        if model in ["ernie-longtext", "ernie-bot-8k"]:
+        if model in ["ernie-bot-8k"]:
             logging.warning(f"{model} will be deprecated after 2024.4.11, so we will automatically map it to ernie-3.5-8k")
 
     @overload
