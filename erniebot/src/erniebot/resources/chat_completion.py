@@ -444,12 +444,12 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
             kwargs["headers"] = headers
         if request_timeout is not None:
             kwargs["request_timeout"] = request_timeout
-        
+
         resp = await resource.acreate_resource(**kwargs)
         return transform(ChatCompletionResponse.from_mapping, resp)
 
-    def _check_model_kwargs(self, model_name: str, kwargs: dict[str, Any]):
-        if model_name in ("ernie-turbo"):
+    def _check_model_kwargs(self, model_name: str, kwargs: Dict[str, Any]) -> None:
+        if model_name in ("ernie-turbo",):
             for arg in (
                 "functions",
                 "stop",
@@ -469,7 +469,7 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
             ):
                 if arg in kwargs:
                     raise errors.InvalidArgumentError(f"`{arg}` is not supported by the {model_name} model.")
-        
+
     def _prepare_create(self, kwargs: Dict[str, Any]) -> RequestWithStream:
         def _update_model_name(given_name: str, old_name_to_new_name: Dict[str, str]) -> str:
             if given_name in old_name_to_new_name:
