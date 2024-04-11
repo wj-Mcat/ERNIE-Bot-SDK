@@ -64,7 +64,7 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-longtext": {
                     "model_id": "ernie_bot_8k",
                 },
-                "ernie_speed": {
+                "ernie-speed": {
                     "model_id": "ernie_speed",
                 },
                 "ernie-speed-128k": {
@@ -93,7 +93,7 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-longtext": {
                     "model_id": "ernie_bot_8k",
                 },
-                "ernie_speed": {
+                "ernie-speed": {
                     "model_id": "ernie_speed",
                 },
                 "ernie-speed-128k": {
@@ -112,6 +112,15 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
             "models": {
                 "ernie-3.5": {
                     "model_id": "completions",
+                },
+                "ernie-4.0": {
+                    "model_id": "completions_pro",
+                },
+                "ernie-longtext": {
+                    "model_id": "ernie_bot_8k",
+                },
+                "ernie-speed": {
+                    "model_id": "ernie_speed",
                 },
             },
         },
@@ -502,8 +511,14 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
 
         # params
         params = {}
-        if model == "ernie-turbo":
-            for arg in ("functions", "stop", "disable_search", "enable_citation"):
+        if model in ("ernie-turbo", "ernie-speed"):
+            for arg in (
+                "functions",
+                "stop",
+                "disable_search",
+                "enable_citation",
+                "tool_choice",
+            ):
                 if arg in kwargs:
                     raise errors.InvalidArgumentError(f"`{arg}` is not supported by the {model} model.")
         params["messages"] = messages
@@ -529,7 +544,7 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
 
         # headers
         headers: HeadersType = {}
-        if self.api_type is APIType.AISTUDIO:
+        if self.api_type is APIType.AISTUDIO or self.api_type is APIType.CUSTOM:
             headers["Content-Type"] = "application/json"
         if "headers" in kwargs:
             headers.update(kwargs["headers"])
