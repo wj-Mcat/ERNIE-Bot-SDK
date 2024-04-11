@@ -64,6 +64,18 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-longtext": {
                     "model_id": "ernie_bot_8k",
                 },
+                "ernie_speed": {
+                    "model_id": "ernie_speed",
+                },
+                "ernie-speed-128k": {
+                    "model_id": "ernie-speed-128k",
+                },
+                "ernie-tiny-8k": {
+                    "model_id": "ernie-tiny-8k",
+                },
+                "ernie-char-8k": {
+                    "model_id": "ernie-char-8k",
+                },
             },
         },
         APIType.AISTUDIO: {
@@ -80,6 +92,18 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 },
                 "ernie-longtext": {
                     "model_id": "ernie_bot_8k",
+                },
+                "ernie_speed": {
+                    "model_id": "ernie_speed",
+                },
+                "ernie-speed-128k": {
+                    "model_id": "ernie-speed-128k",
+                },
+                "ernie-tiny-8k": {
+                    "model_id": "ernie-tiny-8k",
+                },
+                "ernie-char-8k": {
+                    "model_id": "ernie-char-8k",
                 },
             },
         },
