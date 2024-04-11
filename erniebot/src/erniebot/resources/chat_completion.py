@@ -134,11 +134,6 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
         },
     }
 
-    @staticmethod
-    def check_models(model: str):
-        if model in ["ernie-bot-8k"]:
-            logging.warning(f"{model} will be deprecated after 2024.4.11, so we will automatically map it to ernie-3.5-8k")
-
     @overload
     @classmethod
     def create(
@@ -293,7 +288,6 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
         if request_timeout is not None:
             kwargs["request_timeout"] = request_timeout
 
-        cls.check_models(model)
         resp = resource.create_resource(**kwargs)
         return transform(ChatCompletionResponse.from_mapping, resp)
 
@@ -451,10 +445,31 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
         if request_timeout is not None:
             kwargs["request_timeout"] = request_timeout
         
-        cls.check_models(model)
         resp = await resource.acreate_resource(**kwargs)
         return transform(ChatCompletionResponse.from_mapping, resp)
 
+    def _check_model_kwargs(self, model_name: str, kwargs: dict[str, Any]):
+        if model_name in ("ernie-turbo"):
+            for arg in (
+                "functions",
+                "stop",
+                "disable_search",
+                "enable_citation",
+                "tool_choice",
+            ):
+                if arg in kwargs:
+                    raise errors.InvalidArgumentError(f"`{arg}` is not supported by the {model_name} model.")
+
+        if model_name in ("ernie-speed", "ernie-speed-128k", "ernie-char-8k", "ernie-tiny-8k"):
+            for arg in (
+                "functions",
+                "disable_search",
+                "enable_citation",
+                "tool_choice",
+            ):
+                if arg in kwargs:
+                    raise errors.InvalidArgumentError(f"`{arg}` is not supported by the {model_name} model.")
+        
     def _prepare_create(self, kwargs: Dict[str, Any]) -> RequestWithStream:
         def _update_model_name(given_name: str, old_name_to_new_name: Dict[str, str]) -> str:
             if given_name in old_name_to_new_name:
@@ -506,7 +521,8 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-bot": "ernie-3.5",
                 "ernie-bot-turbo": "ernie-turbo",
                 "ernie-bot-4": "ernie-4.0",
-                "ernie-bot-8k": "ernie-longtext",
+                "ernie-bot-8k": "ernie-3.5-8k",
+                "ernie-longtext": "ernie-3.5-8k",
             },
         )
 
@@ -528,16 +544,8 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
 
         # params
         params = {}
-        if model in ("ernie-turbo", "ernie-speed"):
-            for arg in (
-                "functions",
-                "stop",
-                "disable_search",
-                "enable_citation",
-                "tool_choice",
-            ):
-                if arg in kwargs:
-                    raise errors.InvalidArgumentError(f"`{arg}` is not supported by the {model} model.")
+        self._check_model_kwargs(model, kwargs)
+
         params["messages"] = messages
         if "functions" in kwargs:
             functions = kwargs["functions"]
