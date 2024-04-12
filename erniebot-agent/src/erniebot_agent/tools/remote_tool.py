@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import dataclasses
 import logging
 from copy import deepcopy
@@ -117,6 +118,9 @@ class RemoteTool(BaseTool):
 
         headers = deepcopy(self.headers)
         headers["Content-Type"] = self.tool_view.parameters_content_type
+
+        if "EB_SDK_TRACE_APP_ID" in os.environ:
+            headers["X-EB-SDK-TRACE-APP-ID"] = os.getenv("EB_SDK_TRACE_APP_ID")
 
         requests_inputs = {
             "headers": headers,
