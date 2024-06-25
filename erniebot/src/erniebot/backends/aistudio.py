@@ -118,7 +118,7 @@ class AIStudioBackend(EBBackend):
                 headers["Authorization"],
             )
         if "EB_SDK_TRACE_APP_ID" in os.environ:
-            headers["X-EB-SDK-TRACE-APP-ID"] = os.getenv("EB_SDK_TRACE_APP_ID")
+            headers["X-EB-SDK-TRACE-APP-ID"] = os.getenv("EB_SDK_TRACE_APP_ID", "")
 
         headers["Authorization"] = f"token {self._access_token}"
         return headers
