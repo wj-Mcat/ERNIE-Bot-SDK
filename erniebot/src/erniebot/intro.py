@@ -27,6 +27,7 @@ class Model(object):
             ("ernie-3.5", "文心大模型（ernie-3.5）"),
             ("ernie-turbo", "文心大模型（ernie-turbo）"),
             ("ernie-4.0", "文心大模型（ernie-4.0）"),
+            ("ernie-4.0-turbo-8k", "文心大模型（ernie-4.0-turbo-8k）"),
             ("ernie-3.5-8k", "文心大模型（ernie-3.5-8k）"),
             ("ernie-speed", " 文心大模型（ernie-speed）"),
             ("ernie-speed-128k", " 文心大模型（ernie-speed-128k）"),
