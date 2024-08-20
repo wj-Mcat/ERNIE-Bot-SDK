@@ -97,6 +97,12 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-char-8k": {
                     "model_id": "ernie-char-8k",
                 },
+                "ernie-func-8k": {
+                    "model_id": "ernie-func-8k"
+                },
+                "ernie-function-8k": {
+                    "model_id": "ernie-func-8k"
+                }
             },
         },
         APIType.AISTUDIO: {
@@ -129,6 +135,12 @@ class ChatCompletion(EBResource, CreatableWithStreaming):
                 "ernie-char-8k": {
                     "model_id": "ernie-char-8k",
                 },
+                "ernie-func-8k": {
+                    "model_id": "ernie-func-8k"
+                },
+                "ernie-function-8k": {
+                    "model_id": "ernie-func-8k"
+                }
             },
         },
         APIType.CUSTOM: {
